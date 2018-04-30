@@ -1,17 +1,16 @@
 import os
 from PIL import Image,ImageDraw
 import xml.dom.minidom
+import argparse
 
-root_dir = "./VisDrone2018/"
+root_dir = "./Merge_VisDrone2018/"
 ImgPath = root_dir+'JPEGImages/' 
 AnnoPath = root_dir+'Annotations/'
 
-imagelist = os.listdir(ImgPath)
-for image in imagelist:
-    image_pre, ext = os.path.splitext(image)
-    imgfile = ImgPath + image 
-    xmlfile = AnnoPath + image_pre + '.xml'
-	
+def read_single_img(img_idx):
+    imgfile = ImgPath + image_idx+'.jpg' 
+    xmlfile = AnnoPath + image_idx + '.xml'
+        
     img = Image.open(imgfile)
     DomTree = xml.dom.minidom.parse(xmlfile)
     annotation = DomTree.documentElement
@@ -19,7 +18,7 @@ for image in imagelist:
     filenamelist = annotation.getElementsByTagName('filename')
     filename = filenamelist[0].childNodes[0].data
     objectlist = annotation.getElementsByTagName('object')
-	
+        
     for objects in objectlist:
         namelist = objects.getElementsByTagName('name')
         objectname = namelist[0].childNodes[0].data
@@ -39,5 +38,10 @@ for image in imagelist:
             draw.rectangle([x1,y1,x2,y2],outline="green")
             # red color for text
             draw.text((x1,y1),objectname,fill=(255,0,0,255))
-    print(img.size)
     img.show()
+
+if __name__ == '__main__':
+    parser = parse.ArgumentParser('main')
+    parser.add_argument('img_idx')
+    args = parser.parse_args()
+    read_single_img(args.img_idx)

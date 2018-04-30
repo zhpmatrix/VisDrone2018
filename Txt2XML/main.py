@@ -48,8 +48,8 @@ for filename in os.listdir(annotations_dir):
             fout.write('\t\t'+'<bndbox>'+'\n')
             fout.write('\t\t\t'+'<xmin>'+line[0]+'</xmin>'+'\n')
             fout.write('\t\t\t'+'<ymin>'+line[1]+'</ymin>'+'\n')
-            fout.write('\t\t\t'+'<xmax>'+str(int(line[0])+int(line[2]))+'</xmax>'+'\n')
-            fout.write('\t\t\t'+'<ymax>'+str(int(line[1])+int(line[3]))+'</ymax>'+'\n')
+            fout.write('\t\t\t'+'<xmax>'+str(int(line[0])+int(line[2])-1)+'</xmax>'+'\n')
+            fout.write('\t\t\t'+'<ymax>'+str(int(line[1])+int(line[3])-1)+'</ymax>'+'\n')
             fout.write('\t\t'+'</bndbox>'+'\n')
             fout.write('\t'+'</object>'+'\n')
              
