@@ -34,10 +34,12 @@ def read_single_img(img_idx):
             y2 = int(y2_list[0].childNodes[0].data)
             draw = ImageDraw.Draw(img)
             
-            # green color for rectangle
-            draw.rectangle([x1,y1,x2,y2],outline="green")
-            # red color for text
-            draw.text((x1,y1),objectname,fill=(255,0,0,255))
+            if y1 == 414 and y2 == 413:
+                print(x1,y1,x2,y2,img.size)
+                # green color for rectangle
+                draw.rectangle([x1,y1,x2,y2],outline="green")
+                # red color for text
+                draw.text((x1,y1),objectname,fill=(255,0,0,255))
     img.show()
 
 if __name__ == '__main__':

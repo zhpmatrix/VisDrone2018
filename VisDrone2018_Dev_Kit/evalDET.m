@@ -15,7 +15,7 @@ imgPath = fullfile(datasetPath, 'JPEGImages'); % image name path
 %nameImgs = findImageList(gtPath); % image list(for all imgs)
 nameImgs = cell(1,1) % image list(for single imgs)
 
-img_idx = '0000001_04527_d_0000008'
+img_idx = '9999985_00000_d_0000020'
 
 nameImgs(1,1) = {[strcat(img_idx,'.txt')]}
 numImgs = length(nameImgs);
