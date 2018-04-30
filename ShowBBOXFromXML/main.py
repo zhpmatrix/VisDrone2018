@@ -3,13 +3,13 @@ from PIL import Image,ImageDraw
 import xml.dom.minidom
 import argparse
 
-root_dir = "./Merge_VisDrone2018/"
+root_dir = "../../data/Merge_VisDrone2018/"
 ImgPath = root_dir+'JPEGImages/' 
 AnnoPath = root_dir+'Annotations/'
 
 def read_single_img(img_idx):
-    imgfile = ImgPath + image_idx+'.jpg' 
-    xmlfile = AnnoPath + image_idx + '.xml'
+    imgfile = ImgPath + img_idx+'.jpg' 
+    xmlfile = AnnoPath + img_idx + '.xml'
         
     img = Image.open(imgfile)
     DomTree = xml.dom.minidom.parse(xmlfile)
@@ -41,7 +41,8 @@ def read_single_img(img_idx):
     img.show()
 
 if __name__ == '__main__':
-    parser = parse.ArgumentParser('main')
+    parser = argparse.ArgumentParser('main')
     parser.add_argument('img_idx')
+    #img_idx = '0000001_04527_d_0000008'
     args = parser.parse_args()
     read_single_img(args.img_idx)
