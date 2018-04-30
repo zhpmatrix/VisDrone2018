@@ -6,14 +6,15 @@ isImgDisplay = true; % flag to display the groundtruth and detections
 
 %datasetPath = './VisDrone2018-DET-test-challenge/'; % dataset path
 %resPath = './Faster-RCNN_results-test-challenge/'; % result path
-datasetPath = './GT/'
-resPath = './Res_annotations/'
+datasetPath = '../../Data/Merge_VisDrone2018/'
+resPath = '../../Data/Merge_VisDrone2018/Res_annotations'
 
-gtPath = fullfile(datasetPath, 'annotations'); % annotation path
-imgPath = fullfile(datasetPath, 'images'); % image name path
+gtPath = fullfile(datasetPath, 'TXT_annotations'); % annotation path
+imgPath = fullfile(datasetPath, 'JPEGImages'); % image name path
 nameImgs = findImageList(gtPath); % image list
 numImgs = length(nameImgs);
-
+disp(nameImgs)
+exit()
 % process the annotations and groundtruth
 [allgt, alldet] = saveAnnoRes(gtPath, resPath, numImgs, nameImgs);
 
