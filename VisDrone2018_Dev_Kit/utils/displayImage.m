@@ -21,9 +21,9 @@ if(isImgDisplay)
         figure(1),imshow(img);hold on;
         
         % show the detections
-%         for k = 1:size(det,1)
-%            rectangle('position', det(k,1:4), 'linewidth', 1, 'edgecolor', 'r');            
-%         end          
+        for k = 1:size(det,1)
+           rectangle('position', det(k,1:4), 'linewidth', 1, 'edgecolor', 'r');            
+        end          
         
         % show the groundtruth
         idxObject = find(gt(:,6) ~= 0);
