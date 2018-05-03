@@ -32,7 +32,7 @@ if(isImgDisplay)
         end
 
         title(['#' num2str(idImg) '/' num2str(numImgs) '-->{\color{black}ignored / \color{green}groundtruth / \color{red}detection}']);
-        pause(1.0);
+        pause(20);
         %close all;
     end
 end

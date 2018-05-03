@@ -5,6 +5,9 @@ AP = zeros(10, 10);
 AR = zeros(10, 10, 4);
 
 for idClass = 1:10
+    if idClass == 4
+        keyboard;
+    end
     disp(['evaluating object category ' num2str(idClass) '/10...'])
     x = 0;
     for thr = 0.5:0.05:0.95

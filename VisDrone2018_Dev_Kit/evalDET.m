@@ -2,26 +2,29 @@ close all;
 warning off; %#ok<WNOFF>
 addpath('utils');
 
-isImgDisplay = true; % flag to display the groundtruth and detections
+
 
 %datasetPath = './VisDrone2018-DET-test-challenge/'; % dataset path
 %resPath = './Faster-RCNN_results-test-challenge/'; % result path
 datasetPath = '../../Data/VisDrone2018-DET-val/'
-resPath = '../../Results/Det/1_1_7018/annotations'
+resPath = '../../Results/Det/13/annotations'
 
 gtPath = fullfile(datasetPath, 'annotations'); % annotation path
 imgPath = fullfile(datasetPath, 'images'); % image name path
 
 %Eval all images
-%nameImgs = findImageList(gtPath); % image list(for all imgs)
+nameImgs = findImageList(gtPath); % image list(for all imgs)
 
 %Eval single images
-img_idx = '0000295_00600_d_0000024'
+%img_idx = '0000026_01000_d_0000026'
 %img_idx = '0000364_01765_d_0000782'
 %img_idx = '0000295_00200_d_0000022'
 %img_idx = '0000249_03900_d_0000011'
-nameImgs = cell(1,1)
-nameImgs(1,1) = {[strcat(img_idx,'.txt')]}
+
+% flag to display the groundtruth and detections
+isImgDisplay = false; 
+%nameImgs = cell(1,1)
+%nameImgs(1,1) = {[strcat(img_idx,'.txt')]}
 
 numImgs = length(nameImgs);
 % process the annotations and groundtruth
