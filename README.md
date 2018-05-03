@@ -9,3 +9,5 @@ Txt2XML:官方给定数据集的Ground Truth是自己的标注方式（Txt），
 ShowBBOXFromXML:针对PASCAL VOC2007，在图片上显示BBox；Python实现；该工具已经和官方给定基于Matlab的代码做过准确度对比，检验通过；
 
 未分享代码：离线Badcase分析工具，通过该工具，发现官方给定数据集的三个BBox的标注问题（会造成NaN问题）；
+
+VisEval: VisDrone2018的Python评估代码，逻辑有误。
