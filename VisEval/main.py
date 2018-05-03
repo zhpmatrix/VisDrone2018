@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -35,8 +36,8 @@ def get_metric(real_root_annotations, pred_root_annotations, iou_threshold=0.50)
     bbox_number_per_image = 500
     annotation_names = os.listdir(real_root_annotations)
     image_number = len(annotation_names)
-    
-    percisions_all_images = []
+    class_number = 10
+    percision_all_classes = []
     for idx,real_annotations in enumerate(annotation_names):
         print(real_annotations,idx, '/', image_number)
         real = pd.read_csv(real_root_annotations+real_annotations, header=None, sep=',')
@@ -48,8 +49,10 @@ def get_metric(real_root_annotations, pred_root_annotations, iou_threshold=0.50)
         filtered_real_others = filtered_real_ignored_region[filtered_real_ignored_region.ix[:,cate_idx] != others_idx]
         
         #filter occlusion(>0.50)
-        occlusion_idx = 7
-        filtered_real = filtered_real_others[filtered_real_others.ix[:,occlusion_idx] != 2] 
+        #occlusion_idx = 7
+        #filtered_real = filtered_real_others[filtered_real_others.ix[:,occlusion_idx] != 2] 
+
+        filtered_real = filtered_real_others
 
         filtered_pred_ignored_region = pred[pred.ix[:,cate_idx] != ignored_region_idx]
         filtered_pred = filtered_pred_ignored_region[filtered_pred_ignored_region.ix[:,cate_idx] != others_idx]
@@ -61,46 +64,59 @@ def get_metric(real_root_annotations, pred_root_annotations, iou_threshold=0.50)
         #set number of bbox for each image as score 
         filtered_pred = filtered_pred[:bbox_number_per_image]
         
-        #calculate precision for each class in per image(IoU)
-        cates = filtered_pred.ix[:,cate_idx].unique().tolist()
-        percisions_per_image = []
-        for cate in cates:
-            cate_filtered_real = filtered_real[filtered_real.ix[:,cate_idx] == cate]
-            cate_filtered_pred = filtered_pred[filtered_pred.ix[:,cate_idx] == cate]
+        percisions = [0 for cls_idx in range(class_number)]
+        for cls_idx in range(class_number):
+            pred_per_cls = filtered_pred[filtered_pred.ix[:,cate_idx] == cls_idx + 1]
+            real_per_cls = filtered_real[filtered_real.ix[:,cate_idx] == cls_idx + 1]
             
-            cate_filtered_real.reset_index(drop=True,inplace=True) 
-            cate_filtered_pred.reset_index(drop=True,inplace=True) 
+            pred_per_cls.reset_index(drop=True,inplace=True)
+            real_per_cls.reset_index(drop=True,inplace=True)
             
-            #precision
-            
-            number_all_per_class = cate_filtered_real.shape[0]
-            number_true_pos_per_class = 0
-            for i in range(cate_filtered_pred.shape[0]):
-                bbox1 = cate_filtered_pred.ix[i][:4].tolist()
-                for j in range(number_all_per_class):
-                    bbox2 = cate_filtered_real.ix[j][:4].tolist()
-                    if bbox_iou(bbox1, bbox2) > iou_threshold:
-                        number_true_pos_per_class += 1
-                        #match only one real bbox for each pred bbox
-                        break
-            if number_all_per_class != 0:
-                percision_per_class = ( number_true_pos_per_class * 1.0 ) / number_all_per_class
+            real_cls_num = real_per_cls.shape[0]
+            counter = 0 
+            for i in range(pred_per_cls.shape[0]):
+                for j in range(real_cls_num):
+                    bbox1 = pred_per_cls.ix[i][:score_idx] #coordinate before score_idx
+                    bbox2 = real_per_cls.ix[j][:score_idx]
+                    iou = bbox_iou(bbox1, bbox2)
+                    if iou > iou_threshold:
+                       counter += 1
+                       break
+            if real_cls_num == 0:
+                percisions[cls_idx] = 0 
             else:
-                percision_per_class = 0.0
-            percisions_per_image.append(percision_per_class) 
-        mAP_per_image = sum(percisions_per_image) * 1.0 / len(cates)
-        print(real_annotations,mAP_per_image,percisions_per_image)
-        percisions_all_images.append(mAP_per_image)
-    mAP = sum(percisions_all_images) * 1.0 / image_number
-    return 'mAP@'+str(iou_threshold)+':\t'+str(mAP)
+                percisions[cls_idx] = counter * 1.0 / (real_cls_num) 
+        #print(percisions)
+        percision_all_classes.append(percisions)
+    mAP = np.average( np.average(np.array(percision_all_classes), axis=0) )
+    return mAP
 
+def get_mAP(real_root_annotations, pred_root_annotations):
+    iou_start,iou_end,iou_step = 0.50, 0.95, 0.05
+    mmAP = []
+    mAP_50 = 0.0
+    mAP_75 = 0.0
+    mAP_Range = 0.0
+
+    for threshold in range(int( iou_start * 100) , int( iou_end * 100 ), int( iou_step * 100) ):
+        iou_threshold =  threshold * 1.0 / 100
+        mAP_ = get_metric(real_root_annotations, pred_root_annotations, iou_threshold)
+        if iou_threshold == 0.50:
+            mAP_50 = mAP_
+        if iou_threshold == 0.75:
+            mAP_75 = mAP_
+        mmAP.append(mAP_)
+    mAP_Range = sum(mmAP)*1.0/len(mmAP)
+    return mAP_Range, mAP_50, mAP_75  
+        
+    
 def show_det():
     pass
 
 if __name__ == '__main__':
     epoch_num = 13
-    iou_threshold = 0.50
+    iou_threshold = 0.75
     pred_root_annotations = '../../Results/Det/'+str(epoch_num)+'/annotations/'
     real_root_annotations = '../../Data/VisDrone2018-DET-val/annotations/'
-    mAP = get_metric(real_root_annotations, pred_root_annotations, iou_threshold)
-    print(mAP)
+    mAP_Range,mAP_50,mAP_75= get_mAP(real_root_annotations, pred_root_annotations)
+    print('AP@0.50:0.95:',mAP_Range,'AP@0.50:',mAP_50,'AP@0.75:',mAP_75)
