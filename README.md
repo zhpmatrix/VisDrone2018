@@ -1,5 +1,7 @@
 # VisDrone2018
 
+Code中分享了基于PyTorch的Faster R-CNN代码用于这个比赛，原始代码来自[@jwyang](https://github.com/jwyang/faster-rcnn.pytorch)，原始代码写的也有很多不完善的地方，但是是基于PyTorch实现的star最多的，用起来是没有问题的。Code中的仅仅作为该比赛代码的备份，不做正式分享。比如，没有数据。如果想要在现有代码基础上做些工作，可以联系我本人，帮助跑代码。
+
 ECCV2018的一个workshop举办的比赛，详见[Vision Meets Drones: A Challenge](http://www.aiskyeye.com/).
 
 VisDrone2018_Dev_Kit: 官方提供的针对数据集的工具，用于评测。可以改为其他工具，比如在图片上显示BBox；
@@ -11,3 +13,4 @@ ShowBBOXFromXML:针对PASCAL VOC2007，在图片上显示BBox；Python实现；�
 未分享代码：离线Badcase分析工具，通过该工具，发现官方给定数据集的三个BBox的标注问题（会造成NaN问题）；
 
 VisEval: VisDrone2018的Python评估代码，逻辑有误。
+
