@@ -1,12 +1,13 @@
 import os
-from PIL import Image,ImageDraw
-import xml.dom.minidom
-import argparse
-import pandas as pd
-import pickle
 import cv2
-from numpy import *
+import pickle
+import argparse
+import numpy as np
+import pandas as pd
+import xml.dom.minidom
 import matplotlib.pyplot as plt
+from PIL import Image,ImageDraw
+
 root_dir = "../../data/Merge_VisDrone2018/"
 ImgPath = root_dir+'JPEGImages/' 
 AnnoPath = root_dir+'Annotations/'
@@ -61,11 +62,14 @@ def read_all_images(train_list):
 def get_bbox():
     with open('bbox_dict.pkl', 'rb') as f:
         bboxes = pickle.load(f)
-    return bboxes
+    for key in bboxes.keys():
+        bbox = bboxes[key]
+        plt.scatter([x[0] for x in bbox], [x[1] for x in bbox])
+        plt.show()
+        plt.close()
 
-def get_mean_rgb(img_dir):
+def get_mean_rgb(img_dir,img_size):
     img_list=os.listdir(img_dir)
-    img_size=2000
     sum_r=0
     sum_g=0
     sum_b=0
@@ -99,11 +103,12 @@ if __name__ == '__main__':
     
     #train_list = "../../data/Merge_VisDrone2018/ImageSets/Main/train.txt"
     #read_all_images(train_list)
-    #bboxes = get_bbox()
+    #get_bbox()
     #print(bboxes.keys())
 
-    img_dir = "../../Data/VisDrone2018-DET-train/images/"
-    #RGB:95.003518834106174, 96.386738363931443, 92.885945304899025
-    get_mean_rgb(img_dir)
+    #img_dir = "../../Data/VisDrone2018-DET-train/images/"
+    #img_size = 1000
+    #size=2000,RGB:95.003518834106174, 96.386738363931443, 92.885945304899025
+    #get_mean_rgb(img_dir,img_size)
 
 

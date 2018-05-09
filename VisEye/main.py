@@ -16,29 +16,30 @@ def get_scale(ann_dir):
         plt.close()
 
 def get_wh(img_dir):
-    size_set = set()
+    size_set = {}
     counter = 0
     for filename in os.listdir(img_dir):
         counter += 1
         img = Image.open(img_dir+filename)
         print(counter,filename,img.size)
-        size_set.add(img.size)
-    print(size_set)
+        size_set.setdefault(img.size,[]).append(filename)
+    for key in size_set.keys():
+        print(key, len(size_set[key]) )
 
 
 if __name__ == '__main__':
     
-    real_root_annotations = '../../../Data/VisDrone2018-DET-val/annotations/'   
-    get_scale(real_root_annotations)
+    #real_root_annotations = '../../../Data/VisDrone2018-DET-val/annotations/'   
+    #get_scale(real_root_annotations)
     
-    real_root_images = '../../../Data/VisDrone2018-DET-test-challenge/images/'   
+    real_root_images = '../../Data/VisDrone2018-DET-val/images/'   
     """
     TRAIN:
 
     (1398, 1048), (1344, 756), (1920, 1080), 
     (1360, 765), (1916, 1078), (1400, 1050), 
     (2000, 1500), (1389, 1042), (1400, 788), 
-    (480, 360), (960, 540)}
+    (480, 360), (960, 540)
     
     VAL:
     (1920, 1080), (1360, 765), (960, 540)
@@ -48,4 +49,4 @@ if __name__ == '__main__':
     (1916, 1078), (1400, 1050), (1400, 788)
 
     """
-    #get_wh(real_root_images)
+    get_wh(real_root_images)
