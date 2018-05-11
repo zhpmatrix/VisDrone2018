@@ -12,18 +12,18 @@ root_dir = "../../data/Merge_VisDrone2018/"
 ImgPath = root_dir+'JPEGImages/' 
 AnnoPath = root_dir+'Annotations/'
 
-def read_single_img(img_idx,bboxes):
+def read_single_img(img_idx):
     imgfile = ImgPath + img_idx+'.jpg' 
     xmlfile = AnnoPath + img_idx + '.xml'
         
-    #img = Image.open(imgfile)
+    img = Image.open(imgfile)
     DomTree = xml.dom.minidom.parse(xmlfile)
     annotation = DomTree.documentElement
 
     filenamelist = annotation.getElementsByTagName('filename')
     filename = filenamelist[0].childNodes[0].data
     objectlist = annotation.getElementsByTagName('object')
-    
+    #bboxes.append(len(objectlist))    
     for objects in objectlist:
         namelist = objects.getElementsByTagName('name')
         objectname = namelist[0].childNodes[0].data
@@ -37,26 +37,23 @@ def read_single_img(img_idx,bboxes):
             x2 = int(x2_list[0].childNodes[0].data)
             y2_list = box.getElementsByTagName('ymax')
             y2 = int(y2_list[0].childNodes[0].data)
-            bboxes.setdefault(objectname,[]).append((x2 - x1, y2 - y1))
-            # bboxes[objectname].append((x2-x1, y2-y1))
-            # draw = ImageDraw.Draw(img)
-            # print(x1,y1,x2,y2,img.size)
+              
+            draw = ImageDraw.Draw(img)
             # green color for rectangle
-            # draw.rectangle([x1,y1,x2,y2],outline="green")
+            draw.rectangle([x1,y1,x2,y2],outline="green")
             # red color for text
-            # draw.text((x1,y1),objectname,fill=(255,0,0,255))
-    #img.show()
+            draw.text((x1,y1),objectname,fill=(255,0,0,255))
+    img.show()
 
 def read_all_images(train_list):
-    bboxes = {}
+    bboxes = []
     img_list = pd.read_csv(train_list, header=None)
     train_num = img_list.shape[0]
     for i in range( train_num):
         print(i,"/",img_list.shape[0])
-        read_single_img(img_list.ix[i][0], bboxes)
-    with open('bbox_dict.pkl', 'wb') as f:
-        pickle.dump(bboxes, f)
-        
+        read_single_img(img_list.ix[i][0],bboxes)
+    #with open('bbox_dict.pkl', 'wb') as f:
+    #    pickle.dump(bboxes, f)
     print('Done!')
 
 def get_bbox():
@@ -97,18 +94,20 @@ if __name__ == '__main__':
     
     #parser = argparse.ArgumentParser('main')
     #parser.add_argument('img_idx')
-    #img_idx = '0000001_04527_d_0000008'
+    img_idx = '0000068_00460_d_0000002'
     #args = parser.parse_args()
-    #read_single_img(args.img_idx)
+    read_single_img(img_idx)
     
-    #train_list = "../../data/Merge_VisDrone2018/ImageSets/Main/train.txt"
+    train_list = "../../data/Merge_VisDrone2018/ImageSets/Main/train.txt"
     #read_all_images(train_list)
     #get_bbox()
     #print(bboxes.keys())
 
-    #img_dir = "../../Data/VisDrone2018-DET-train/images/"
-    #img_size = 1000
+    img_dir = "../../Data/VisDrone2018-DET-train/images/"
+    img_size = 1050
     #size=2000,RGB:95.003518834106174, 96.386738363931443, 92.885945304899025
+    #size=1400,RGB:95.035268631239916, 96.41846471675818, 92.917909987495165
+    #size=1050,RGB:95.060276139104829, 96.44352133232799, 92.942862747769652
     #get_mean_rgb(img_dir,img_size)
 
 
