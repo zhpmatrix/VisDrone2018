@@ -2,8 +2,6 @@ close all;
 warning off; %#ok<WNOFF>
 addpath('utils');
 
-
-
 %datasetPath = './VisDrone2018-DET-test-challenge/'; % dataset path
 %resPath = './Faster-RCNN_results-test-challenge/'; % result path
 datasetPath = '../../Data/VisDrone2018-DET-val/'
