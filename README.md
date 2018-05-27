@@ -3,7 +3,7 @@
 Baseline结果：
  
  Name|maxDets|Result
----------------|----------------
+---------------|------------------|----------------
 Average Precision  (AP) @[ IoU=0.50:0.95 | maxDets=500 ] | 15.8738%.
 Average Precision  (AP) @[ IoU=0.50      | maxDets=500 ] | 21.7822%.
 Average Precision  (AP) @[ IoU=0.75      | maxDets=500 ] | 17.1753%.
