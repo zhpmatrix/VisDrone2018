@@ -47,6 +47,9 @@ def parse_args():
   Parse input arguments
   """
   parser = argparse.ArgumentParser(description='Train a Fast R-CNN network')
+  parser.add_argument('--load_name', dest='load_name',
+                      help='load name',
+                      default='pascal_voc', type=str)
   parser.add_argument('--dataset', dest='dataset',
                       help='training dataset',
                       default='pascal_voc', type=str)
@@ -77,15 +80,15 @@ def parse_args():
   parser.add_argument('--parallel_type', dest='parallel_type',
                       help='which part of model to parallel, 0: all, 1: model before roi pooling',
                       default=0, type=int)
-  parser.add_argument('--checksession', dest='checksession',
-                      help='checksession to load model',
-                      default=1, type=int)
-  parser.add_argument('--checkepoch', dest='checkepoch',
-                      help='checkepoch to load network',
-                      default=1, type=int)
-  parser.add_argument('--checkpoint', dest='checkpoint',
-                      help='checkpoint to load network',
-                      default=10021, type=int)
+ # parser.add_argument('--checksession', dest='checksession',
+ #                     help='checksession to load model',
+ #                     default=1, type=int)
+ # parser.add_argument('--checkepoch', dest='checkepoch',
+ #                     help='checkepoch to load network',
+ #                     default=1, type=int)
+ # parser.add_argument('--checkpoint', dest='checkpoint',
+ #                     help='checkpoint to load network',
+ #                     default=10021, type=int)
   parser.add_argument('--bs', dest='batch_size',
                       help='batch_size',
                       default=1, type=int)
@@ -161,8 +164,9 @@ if __name__ == '__main__':
   input_dir = args.load_dir + "/" + args.net + "/" + args.dataset
   if not os.path.exists(input_dir):
     raise Exception('There is no input directory for loading network from ' + input_dir)
-  load_name = os.path.join(input_dir,
-    'faster_rcnn_{}_{}_{}.pth'.format(args.checksession, args.checkepoch, args.checkpoint))
+  load_name = args.load_name
+  #load_name = os.path.join(input_dir,
+  # 'faster_rcnn_{}_{}_{}.pth'.format(args.checksession, args.checkepoch, args.checkpoint))
 
   #pascal_classes = np.asarray(['__background__',
   #                     'aeroplane', 'bicycle', 'bird', 'boat',
@@ -188,16 +192,16 @@ if __name__ == '__main__':
     print("network is not defined")
     pdb.set_trace()
   
-  anchor_num = 15 #default 18
+  anchor_num = 15 #default 3x3
   fasterRCNN.RCNN_rpn.RPN_cls_score = torch.nn.Conv2d(512, anchor_num * 2, kernel_size=(1, 1), stride=(1, 1))
   fasterRCNN.RCNN_rpn.RPN_bbox_pred = torch.nn.Conv2d(512, anchor_num * 4, kernel_size=(1, 1), stride=(1, 1))
   fasterRCNN.create_architecture()
 
   print("load checkpoint %s" % (load_name))
   if args.cuda > 0:
-    checkpoint = torch.load(load_name)
+    checkpoint = torch.load(os.path.join(input_dir, load_name))
   else:
-    checkpoint = torch.load(load_name, map_location=(lambda storage, loc: storage))
+    checkpoint = torch.load(os.path.join(input_dir, load_name ), map_location=(lambda storage, loc: storage))
   fasterRCNN.load_state_dict(checkpoint['model'])
   if 'pooling_mode' in checkpoint.keys():
     cfg.POOLING_MODE = checkpoint['pooling_mode']
@@ -279,7 +283,6 @@ if __name__ == '__main__':
       assert len(im_scales) == 1, "Only single-image batch implemented"
       im_blob = blobs
       im_info_np = np.array([[im_blob.shape[1], im_blob.shape[2], im_scales[0]]], dtype=np.float32)
-
       im_data_pt = torch.from_numpy(im_blob)
       im_data_pt = im_data_pt.permute(0, 3, 1, 2)
       im_info_pt = torch.from_numpy(im_info_np)
@@ -338,7 +341,10 @@ if __name__ == '__main__':
       misc_tic = time.time()
       if vis:
           im2show = np.copy(im)
-      with open('annotations/'+imglist[num_images].split('.')[0]+'.txt','w') as Res_file:
+      anno_dir = "annotations/"+args.load_name+"/"
+      if os.path.exists(anno_dir) == False:
+	      os.mkdir(anno_dir)
+      with open(anno_dir+imglist[num_images].split('.')[0]+'.txt','w') as Res_file:
           for j in xrange(1, len(pascal_classes)):
               inds = torch.nonzero(scores[:,j]>thresh).view(-1)
               # if there is det
@@ -370,9 +376,12 @@ if __name__ == '__main__':
       if vis and webcam_num == -1:
           # cv2.imshow('test', im2show)
           # cv2.waitKey(0)
-          result_path = os.path.join("detections/", imglist[num_images][:-4] + "_det.jpg")
-          print(result_path)
-          cv2.imwrite(result_path, im2show)
+          det_dir = "detections/"+args.load_name+"/"
+	  if os.path.exists(det_dir) == False:
+		  os.mkdir(det_dir)
+	  
+	  result_path = os.path.join(det_dir, imglist[num_images][:-4] + "_det.jpg")
+	  cv2.imwrite(result_path, im2show)
       else:
           im2showRGB = cv2.cvtColor(im2show, cv2.COLOR_BGR2RGB)
           cv2.imshow("frame", im2showRGB)

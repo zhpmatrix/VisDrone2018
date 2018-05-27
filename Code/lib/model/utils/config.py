@@ -19,7 +19,7 @@ cfg = __C
 __C.TRAIN = edict()
 
 # Initial learning rate
-__C.TRAIN.LEARNING_RATE = 0.001
+__C.TRAIN.LEARNING_RATE = 0.01
 
 # Momentum
 __C.TRAIN.MOMENTUM = 0.9
@@ -60,14 +60,14 @@ __C.TRAIN.SUMMARY_INTERVAL = 180
 
 # Scale to use during training (can list multiple scales)
 # The scale is the pixel size of an image's shortest side
-__C.TRAIN.SCALES = (600,)
+__C.TRAIN.SCALES = (800,)
 
 # Max pixel size of the longest side of a scaled input image
-__C.TRAIN.MAX_SIZE = 1000
+__C.TRAIN.MAX_SIZE = 1400
 
 # Trim size for input images to create minibatch
-__C.TRAIN.TRIM_HEIGHT = 600
-__C.TRAIN.TRIM_WIDTH = 600
+__C.TRAIN.TRIM_HEIGHT = 1400
+__C.TRAIN.TRIM_WIDTH = 1400
 
 # Images to use per minibatch
 __C.TRAIN.IMS_PER_BATCH = 1
@@ -165,10 +165,10 @@ __C.TEST = edict()
 
 # Scale to use during testing (can NOT list multiple scales)
 # The scale is the pixel size of an image's shortest side
-__C.TEST.SCALES = (600,)
+__C.TEST.SCALES = (1000,)
 
 # Max pixel size of the longest side of a scaled input image
-__C.TEST.MAX_SIZE = 1000
+__C.TEST.MAX_SIZE = 1400
 
 # Overlap threshold used for non-maximum suppression (suppress boxes with
 # IoU >= this threshold)
@@ -254,7 +254,8 @@ __C.DEDUP_BOXES = 1. / 16.
 # Pixel mean values (BGR order) as a (1, 1, 3) array
 # We use the same pixel mean for all networks even though it's not exactly what
 # they were trained with
-__C.PIXEL_MEANS = np.array([[[102.9801, 115.9465, 122.7717]]])
+__C.PIXEL_MEANS = np.array([[[92.8859, 96.3867, 95.0035]]])
+
 
 # For reproducibility
 __C.RNG_SEED = 3
