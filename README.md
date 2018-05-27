@@ -4,13 +4,13 @@ Baseline结果：
  
  Name|maxDets|Result
 ---------------|------------------|----------------
-Average Precision  (AP) @[ IoU=0.50:0.95 | maxDets=500 ] | 15.8738%.
-Average Precision  (AP) @[ IoU=0.50      | maxDets=500 ] | 21.7822%.
-Average Precision  (AP) @[ IoU=0.75      | maxDets=500 ] | 17.1753%.
-Average Recall     (AR) @[ IoU=0.50:0.95 | maxDets=  1 ] | 0.83255%.
-Average Recall     (AR) @[ IoU=0.50:0.95 | maxDets= 10 ] | 7.1636%.
-Average Recall     (AR) @[ IoU=0.50:0.95 | maxDets=100 ] | 20.7602%.
-Average Recall     (AR) @[ IoU=0.50:0.95 | maxDets=500 ] | 20.7602%.
+Average Precision  (AP) @( IoU=0.50:0.95) | maxDets=500  | 15.8738%.
+Average Precision  (AP) @( IoU=0.50     ) | maxDets=500  | 21.7822%.
+Average Precision  (AP) @( IoU=0.75     ) | maxDets=500  | 17.1753%.
+Average Recall     (AR) @( IoU=0.50:0.95) | maxDets=  1  | 0.83255%.
+Average Recall     (AR) @( IoU=0.50:0.95) | maxDets= 10  | 7.1636%.
+Average Recall     (AR) @( IoU=0.50:0.95) | maxDets=100  | 20.7602%.
+Average Recall     (AR) @( IoU=0.50:0.95) | maxDets=500  | 20.7602%.
 
 
 Code中分享了基于PyTorch的Faster R-CNN代码用于这个比赛，原始代码来自[@jwyang](https://github.com/jwyang/faster-rcnn.pytorch)，原始代码写的也有很多不完善的地方，但是是基于PyTorch实现的star最多的，用起来是没有问题的。Code中的仅仅作为该比赛代码的备份，不做正式分享。比如，没有数据。如果想要在现有代码基础上做些工作，可以联系我本人，帮助跑代码。
