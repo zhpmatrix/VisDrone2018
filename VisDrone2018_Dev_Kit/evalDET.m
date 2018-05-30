@@ -1,11 +1,12 @@
-close all;
-warning off; %#ok<WNOFF>
+%close all;
+%warning off; %#ok<WNOFF>
 addpath('utils');
 
 %datasetPath = './VisDrone2018-DET-test-challenge/'; % dataset path
 %resPath = './Faster-RCNN_results-test-challenge/'; % result path
 datasetPath = '../../Data/VisDrone2018-DET-val/'
-resPath = '../../Results/Det/small_anchors/annotations'
+%resPath = '../../Results/Det/small_anchors/annotations'
+resPath = strcat('../../Results/Det/small_anchors/annotations/',[anno_dir,'/'])
 
 gtPath = fullfile(datasetPath, 'annotations'); % annotation path
 imgPath = fullfile(datasetPath, 'images'); % image name path
@@ -40,6 +41,7 @@ displayImage(imgPath, numImgs, nameImgs, allgt, alldet, isImgDisplay);
 % disp(['Average Recall     (AR) @[ IoU=0.50:0.95 | maxDets=100 ] = ' num2str(roundn(AR_100,-2)) '%.']);
 % disp(['Average Recall     (AR) @[ IoU=0.50:0.95 | maxDets=500 ] = ' num2str(roundn(AR_500,-2)) '%.']);
 
+disp(anno_dir)
 disp('****************AP***************')
 disp(AP)
 disp('****************AR***************')
