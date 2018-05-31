@@ -13,6 +13,18 @@ Average Recall     (AR) @( IoU=0.50:0.95) | maxDets=100  | 20.7602%.
 Average Recall     (AR) @( IoU=0.50:0.95) | maxDets=500  | 20.7602%.
 
 
+Cases From Test DataSet:
+
+<figure class="half">
+    <img src="case/1.png">
+    <img src="case/2.png">
+</figure>
+
+<figure class="half">
+    <img src="case/3.png">
+    <img src="case/4.png">
+</figure>
+
 ECCV2018的一个workshop举办的比赛，详见[Vision Meets Drones: A Challenge](http://www.aiskyeye.com/).
 
 VisDrone2018_Dev_Kit: 官方提供的针对数据集的工具，用于评测。可以改为其他工具，比如在图片上显示BBox；

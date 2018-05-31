@@ -1,6 +1,6 @@
 <annotation>
 	<folder>VOC2007</folder>
-	<filename>0000068_00001_d_0000001.jpg</filename>
+	<filename>0000097_09823_d_0000051_det.jpg</filename>
 	<source>
 		<database>VisDrone2018 Database</database>
 		<annotation>VisDrone2018</annotation>
@@ -12,21 +12,21 @@
 		<name>Haipeng Zhang</name>
 	</owner>
 	<size>
-		<width>1360</width>
-		<height>765</height>
+		<width>960</width>
+		<height>540</height>
 		<depth>3</depth>
 	</size>
 	<segmented>0</segmented>
 	<object>
 		<name>pedestrian</name>
 		<pose>Unspecified</pose>
-		<truncated>1</truncated>
-		<difficult>0</difficult>
+		<truncated>0</truncated>
+		<difficult>1</difficult>
 		<bndbox>
-			<xmin>0</xmin>
-			<ymin>0</ymin>
-			<xmax>4</xmax>
-			<ymax>3</ymax>
+			<xmin>490</xmin>
+			<ymin>260</ymin>
+			<xmax>520</xmax>
+			<ymax>280</ymax>
 		</bndbox>
 	</object>
 </annotation>
