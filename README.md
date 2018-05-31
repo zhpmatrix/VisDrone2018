@@ -1,5 +1,9 @@
 # VisDrone2018
 
+**说明：后续可能不更新了。**
+
+**Tips: this repo will not be updated.** 
+
 Baseline：
  
  Name|maxDets|Result
