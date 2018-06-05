@@ -62,7 +62,7 @@ def aug_txt(img_idx, txt_path='./', img_path='./'):
                         #update image
                         region=img.crop( (bbox_left, bbox_top, bbox_left+bbox_width-1, bbox_top+bbox_height-1))
                         img.paste(region, ( bbox1[0], bbox1[1]) )
-                        img.save(img_path+img_idx+".jpg")
+                        img.save(img_path+img_idx+"_.jpg")
 
 def txt2xml(img_idx, xml_path = './', txt_path='./',img_path='./'):
     class_name = ['ignored regions','pedestrian','people','bicycle','car','van','truck','tricycle','awning-tricycle','bus','motor','others']
@@ -113,7 +113,7 @@ def txt2xml(img_idx, xml_path = './', txt_path='./',img_path='./'):
         fout.write('</annotation>')
         
 def read_single_img(img_idx):
-    imgfile = img_idx +'.jpg' 
+    imgfile = img_idx +'_.jpg' 
     xmlfile = img_idx + '.xml'
     img = Image.open(imgfile)
     DomTree = xml.dom.minidom.parse(xmlfile)
@@ -146,7 +146,7 @@ def read_single_img(img_idx):
 
 if __name__ == '__main__':
     img_idx = '0000068_00460_d_0000002'
-    #aug_txt(img_idx, txt_path='./', img_path='./')
-    #txt2xml(img_idx, xml_path = './', txt_path='./',img_path='./')
+    aug_txt(img_idx, txt_path='./', img_path='./')
+    txt2xml(img_idx, xml_path = './', txt_path='./',img_path='./')
     read_single_img(img_idx)
     
